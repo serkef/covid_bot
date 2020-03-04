@@ -51,12 +51,16 @@ def slack_status(status):
         logger.info("Will not post to slack - disabled")
 
 
-def create_status(day, territory, value):
+def create_status(total, day, territory, value):
     incident_type = "cases"
     if value == 1:
         incident_type = "case"
     return STATUS_TEMPLATE.format(
-        day=day, incident_type=incident_type, territory=territory, value=value
+        total=total,
+        day=day,
+        incident_type=incident_type,
+        territory=territory,
+        value=value,
     )
 
 

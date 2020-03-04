@@ -82,11 +82,20 @@ DB_GET_LATEST_UPDATES = """
     AND 0 < julianday('now')- julianday(latest_daily.rec_dt)
 """
 
+DB_GET_TOTAL_COUNTS = """
+    SELECT 
+        SUM(latest_daily.rec_value)
+    FROM
+        latest_daily
+    WHERE
+        latest_daily.rec_territory = "{territory}"
+"""
+
 DB_CONNECTION = sqlite3.connect(f"{DB_PATH}")
 
 STATUS_TEMPLATE = """
 #BREAKING latest #COVID19 update
-{value} {incident_type} today in {territory}
+{value} {incident_type} today in {territory}. Raises total to {total}.
 
 Visit 📊covid2019.app for the latest updates
 👉 Follow @covid2019app & fill in the form https://forms.gle/XM4RzKk3QU7CtHQq9 to join our team

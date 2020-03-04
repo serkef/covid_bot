@@ -10,11 +10,21 @@ def test_status_template():
     # Given
     given = [
         {
-            "input": {"value": 1, "territory": "Mordor", "day": datetime.date.today()},
+            "input": {
+                "total": 5,
+                "value": 1,
+                "territory": "Mordor",
+                "day": datetime.date.today(),
+            },
             "expected": "1 case ",
         },
         {
-            "input": {"value": 2, "territory": "Mordor", "day": datetime.date.today()},
+            "input": {
+                "total": 5,
+                "value": 2,
+                "territory": "Mordor",
+                "day": datetime.date.today(),
+            },
             "expected": "2 cases ",
         },
     ]

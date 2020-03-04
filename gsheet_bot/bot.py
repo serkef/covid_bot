@@ -22,6 +22,7 @@ from gsheet_bot.config import (
     DB_PATH,
     DB_GET_LATEST_UPDATES,
     APP_LOGLEVEL,
+    DB_GET_TOTAL_COUNTS,
 )
 
 GSHEET_API = get_gsheet_api()
@@ -68,7 +69,10 @@ def fetch_daily_values():
 
     logger.debug("Returning updates")
     for _, entry in latest.iterrows():
-        yield entry.rec_dt, entry.rec_territory, entry.rec_value
+        total_count = DB_CONNECTION.execute(
+            DB_GET_TOTAL_COUNTS.format(territory=entry.rec_territory)
+        ).fetchone()
+        yield total_count[0], entry.rec_dt, entry.rec_territory, entry.rec_value
 
 
 def main():
@@ -84,8 +88,8 @@ def main():
 
     logger.info(f"Starting...")
     while True:
-        for day, territory, value in fetch_daily_values():
-            status = create_status(day, territory, value)
+        for total, day, territory, value in fetch_daily_values():
+            status = create_status(total, day, territory, value)
             slack_status(status)
             tweet_status(status)
 
