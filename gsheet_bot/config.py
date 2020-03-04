@@ -86,7 +86,7 @@ DB_CONNECTION = sqlite3.connect(f"{DB_PATH}")
 
 STATUS_TEMPLATE = """
 #BREAKING latest #COVID19 update
-{value} cases today in {territory}
+{value} {incident_type} today in {territory}
 
 Visit 📊covid2019.app for the latest updates
 👉 Follow @covid2019app & fill in the form https://forms.gle/XM4RzKk3QU7CtHQq9 to join our team

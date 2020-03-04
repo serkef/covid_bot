@@ -49,7 +49,12 @@ def slack_status(status):
 
 
 def create_status(day, territory, value):
-    return STATUS_TEMPLATE.format(day=day, territory=territory, value=value)
+    incident_type = "cases"
+    if value == 1:
+        incident_type = "case"
+    return STATUS_TEMPLATE.format(
+        day=day, incident_type=incident_type, territory=territory, value=value
+    )
 
 
 def tweet_status(status):
@@ -70,7 +75,7 @@ def get_gsheet_api():
 
     credentials = service_account.Credentials.from_service_account_file(
         filename=GSHEET_API_SERVICE_ACCOUNT_FILE,
-        scopes=["https://www.googleapis.com/auth/spreadsheets"]
+        scopes=["https://www.googleapis.com/auth/spreadsheets"],
     )
 
     service = build("sheets", "v4", credentials=credentials)
