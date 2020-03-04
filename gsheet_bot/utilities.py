@@ -15,7 +15,8 @@ from .config import (
     TWITTER_CONSUMER_KEY_SECRET,
     TWITTER_ACCESS_TOKEN,
     TWITTER_ACCESS_TOKEN_SECRET,
-    ENV,
+    POST_SLACK,
+    POST_TWITTER,
     DB_PATH,
     DB_CREATE_RAW_TABLE,
     DB_CREATE_POSTS,
@@ -23,7 +24,6 @@ from .config import (
     SLACK_WEBHOOK_URL,
     STATUS_TEMPLATE,
     GSHEET_API_SERVICE_ACCOUNT_FILE,
-    GSHEET_API_SCOPES,
 )
 
 
@@ -41,11 +41,14 @@ def slack_status(status):
     logger = logging.getLogger(f"{__name__}.slack_status")
     logger.info(f"Posting status {status!r}")
 
-    requests.post(
-        SLACK_WEBHOOK_URL,
-        data=json.dumps({"text": status}),
-        headers={"Content-Type": "application/json"},
-    )
+    if POST_SLACK:
+        requests.post(
+            SLACK_WEBHOOK_URL,
+            data=json.dumps({"text": status}),
+            headers={"Content-Type": "application/json"},
+        )
+    else:
+        logger.info("Will not post to slack - disabled")
 
 
 def create_status(day, territory, value):
@@ -61,13 +64,13 @@ def tweet_status(status):
     logger = logging.getLogger(f"{__name__}.tweet_status")
     logger.info(f"Posting status {status!r}")
 
-    if ENV == "production":
+    if POST_TWITTER:
         auth = tweepy.OAuthHandler(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_KEY_SECRET)
         auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
         api.update_status(status)
     else:
-        logger.info("Skipping - not in production")
+        logger.info("Will not post to twitter - disabled")
 
 
 def get_gsheet_api():

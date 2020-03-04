@@ -92,4 +92,5 @@ Visit 📊covid2019.app for the latest updates
 👉 Follow @covid2019app & fill in the form https://forms.gle/XM4RzKk3QU7CtHQq9 to join our team
 """
 
-ENV = os.getenv("ENV", "testing")
+POST_TWITTER = os.getenv("POST_TWITTER", "false") == "true"
+POST_SLACK = os.getenv("POST_SLACK", "false") == "true"

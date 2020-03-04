@@ -74,7 +74,8 @@ def fetch_daily_values():
 def main():
     """ Main run function """
 
-    logging.getLogger("googleapiclient.discovery").setLevel("WARNING")
+    logging.getLogger("googleapiclient.discovery").setLevel(APP_LOGLEVEL)
+    logging.getLogger("google_auth_httplib2").setLevel(APP_LOGLEVEL)
     set_logging(APP_LOGLEVEL)
     logger = logging.getLogger(f"{__name__}.main")
 

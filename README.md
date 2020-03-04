@@ -25,4 +25,5 @@ The following are required:
 * `GSHEET_SHEET_NAME` the individual sheet name
 * `SLACK_WEBHOOK_URL` slack webhook URL
 * `DB_PATH` the filepath of the sqlite3 db
-* `ENV` controls whether tweets are actually posted or only logged. Defaults to `testing`. Turn to `production` to post.
+* `POST_SLACK` when `true` posts to Slack are enabled 
+* `POST_TWITTER` when `true` posts to Twitter are enabled 
