@@ -61,11 +61,11 @@ def fetch_daily_values():
     df.to_sql("latest_daily", DB_CONNECTION, if_exists="replace", index=False)
     df.to_sql("raw_data", DB_CONNECTION, if_exists="append", index=False)
     latest = pd.read_sql(DB_GET_LATEST_UPDATES, con=DB_CONNECTION)
-    if len(latest) > 100:
+    latest.to_sql("posts", DB_CONNECTION, if_exists="append", index=False)
+    if len(latest) > 10:
         logger.warning("Too many changes. Won't post")
         logger.warning(pprint.pprint(latest.to_dict()))
         return
-    latest.to_sql("posts", DB_CONNECTION, if_exists="append", index=False)
 
     logger.debug("Returning updates")
     for _, entry in latest.iterrows():
