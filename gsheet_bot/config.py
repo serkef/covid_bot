@@ -94,7 +94,7 @@ DB_GET_TOTAL_COUNTS = """
 DB_CONNECTION = sqlite3.connect(f"{DB_PATH}")
 
 STATUS_TEMPLATE = """
-#BREAKING latest #COVID19 update
+#BREAKING latest #COVID2019 update
 {value} {incident_type} today in {territory}. Raises total to {total}.
 
 Visit 📊covid2019.app for the latest updates
