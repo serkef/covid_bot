@@ -5,8 +5,6 @@ import sqlite3
 from logging.handlers import TimedRotatingFileHandler
 
 import requests
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
 import tweepy
 
 from .config import (
@@ -23,7 +21,6 @@ from .config import (
     DB_CREATE_LATEST_DAILY_TABLE,
     SLACK_WEBHOOK_URL,
     STATUS_TEMPLATE,
-    GSHEET_API_SERVICE_ACCOUNT_FILE,
 )
 
 
@@ -77,20 +74,6 @@ def tweet_status(status):
         api.update_status(status)
     else:
         logger.info("Will not post to twitter - disabled")
-
-
-def get_gsheet_api():
-    """ Initializes Google API. Taken from quickstart example """
-
-    credentials = service_account.Credentials.from_service_account_file(
-        filename=GSHEET_API_SERVICE_ACCOUNT_FILE,
-        scopes=["https://www.googleapis.com/auth/spreadsheets"],
-    )
-
-    service = build("sheets", "v4", credentials=credentials)
-
-    # Call the Sheets API
-    return service.spreadsheets()
 
 
 def set_logging(loglevel: [int, str] = "INFO"):
