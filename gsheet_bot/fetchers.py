@@ -1,6 +1,7 @@
 """ A module for all Fetcher classes """
 import logging
 import sqlite3
+import socket
 
 import pandas as pd
 from google.oauth2 import service_account
@@ -47,7 +48,7 @@ class GsheetFetcher:
                 .get(spreadsheetId=self.spreadsheet_id, range=self.spreadsheet_range)
                 .execute()
             )
-        except HttpError as exc:
+        except (HttpError, socket.timeout) as exc:
             logger.error("Cannot fetch values.", exc_info=True)
             return
 
