@@ -52,16 +52,18 @@ def slack_status(status):
 
 
 def create_status(total, day, territory, value):
-    incident_type = "cases"
     if value == 1:
-        incident_type = "case"
-    return STATUS_TEMPLATE.format(
-        total=total,
-        day=day,
-        incident_type=incident_type,
-        territory=territory,
-        value=value,
-    )
+        msg = f"A new incident reported for {territory}. Raises total to {total}."
+        if total == 1:
+            msg = f"First incident reported for {territory}"
+    else:
+        msg = (
+            f"{value} new incidents reported for {territory}. Raises total to {total}."
+        )
+        if value == total:
+            msg = f"First {value} incidents reported for {territory}"
+
+    return STATUS_TEMPLATE.format(message=msg)
 
 
 def tweet_status(status):

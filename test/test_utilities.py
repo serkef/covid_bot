@@ -7,34 +7,23 @@ import pytest
 def test_status_template():
     """ Test status has correct message """
 
-    # Given
-    given = [
-        {
-            "input": {
-                "total": 5,
-                "value": 1,
-                "territory": "Mordor",
-                "day": datetime.date.today(),
-            },
-            "expected": "1 case ",
-        },
-        {
-            "input": {
-                "total": 5,
-                "value": 2,
-                "territory": "Mordor",
-                "day": datetime.date.today(),
-            },
-            "expected": "2 cases ",
-        },
-    ]
+    day = datetime.date.today()
 
-    # Do
-    for case in given:
-        status = create_status(**case["input"])
+    status = create_status(total=1, value=1, territory="Mordor", day=day)
+    assert "First incident reported for" in status
+    assert "Raises total" not in status
 
-        # Assert
-        assert case["expected"] in status
+    status = create_status(total=5, value=5, territory="Mordor", day=day)
+    assert "First 5 " in status
+    assert "Raises total" not in status
+
+    status = create_status(total=5, value=1, territory="Mordor", day=day)
+    assert "A new incident " in status
+    assert "Raises total " in status
+
+    status = create_status(total=5, value=2, territory="Mordor", day=day)
+    assert "2 new incidents " in status
+    assert "Raises total" in status
 
 
 if __name__ == "__main__":
