@@ -1,7 +1,6 @@
 """ custom utilities """
 import json
 import logging
-import sqlite3
 from logging.handlers import TimedRotatingFileHandler
 
 import requests
@@ -15,23 +14,28 @@ from .config import (
     TWITTER_ACCESS_TOKEN_SECRET,
     POST_SLACK,
     POST_TWITTER,
-    DB_PATH,
-    DB_CREATE_RAW_TABLE,
-    DB_CREATE_POSTS,
+    DB_CREATE_RAW_DAILY_TABLE,
+    DB_CREATE_LATEST_POSTS_TABLE,
     DB_CREATE_LATEST_DAILY_TABLE,
     SLACK_WEBHOOK_URL,
     STATUS_TEMPLATE,
+    build_db_session,
 )
 
 
+def read_file(filepath):
+    with open(filepath, "r") as fin:
+        return fin.read()
+
+
 def create_tables():
-    conn = sqlite3.connect(f"{DB_PATH}")
-    cursor = conn.cursor()
-    cursor.execute(DB_CREATE_RAW_TABLE)
-    cursor.execute(DB_CREATE_LATEST_DAILY_TABLE)
-    cursor.execute(DB_CREATE_POSTS)
-    conn.commit()
-    conn.close()
+    sess = build_db_session()
+    cursor = sess()
+    cursor.execute(read_file(DB_CREATE_RAW_DAILY_TABLE))
+    cursor.execute(read_file(DB_CREATE_LATEST_DAILY_TABLE))
+    cursor.execute(read_file(DB_CREATE_LATEST_POSTS_TABLE))
+    cursor.commit()
+    cursor.close()
 
 
 def slack_status(status):

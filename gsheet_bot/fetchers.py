@@ -1,6 +1,5 @@
 """ A module for all Fetcher classes """
 import logging
-import sqlite3
 import socket
 
 import pandas as pd
@@ -12,10 +11,12 @@ from gsheet_bot.config import (
     GSHEET_API_SERVICE_ACCOUNT_FILE,
     GSHEET_SHEET_NAME,
     GSHEET_SPREADSHEET_ID,
-    DB_PATH,
     DB_GET_LATEST_UPDATES,
     DB_GET_TOTAL_COUNTS,
+    DbSession,
+    DB_INSERT_RAW_DAILY_DATA,
 )
+from gsheet_bot.utilities import read_file
 
 
 class GsheetFetcher:
@@ -26,7 +27,7 @@ class GsheetFetcher:
         self.api = self.get_gsheet_api()
         self.spreadsheet_id = spreadsheet_id
         self.spreadsheet_range = spreadsheet_range
-        self.db = sqlite3.connect(f"{DB_PATH}")
+        self.db = DbSession().bind
 
     def get_gsheet_api(self):
         """ Initializes Google API using service account """
@@ -40,6 +41,7 @@ class GsheetFetcher:
 
     def data(self):
         """ Fetches data from gsheet """
+
         logger = logging.getLogger("GsheetFetcher.fetch")
         logger.debug("Fetching data")
         try:
@@ -94,10 +96,18 @@ class DailyData(GsheetFetcher):
             logger.debug("Fetched empty dataset")
             return
 
-        daily_data.to_sql("latest_daily", self.db, if_exists="replace", index=False)
-        daily_data.to_sql("raw_data", self.db, if_exists="append", index=False)
-        latest = pd.read_sql(DB_GET_LATEST_UPDATES, con=self.db)
-        latest.to_sql("posts", self.db, if_exists="append", index=False)
+        daily_data.to_sql(
+            "latest_daily_data", self.db, if_exists="replace", index=False
+        )
+        self.db.execute(
+            read_file(DB_INSERT_RAW_DAILY_DATA),
+            [
+                (rec.rec_dt, rec.rec_territory, rec.rec_value)
+                for _, rec in daily_data.iterrows()
+            ],
+        )
+        latest = pd.read_sql(read_file(DB_GET_LATEST_UPDATES), con=self.db)
+        latest.to_sql("post_daily_data", self.db, if_exists="append", index=False)
         if len(latest) <= self.MAX_YIELD_SIZE:
             return latest
         logger.warning("Too many changes. Won't post")
@@ -106,11 +116,12 @@ class DailyData(GsheetFetcher):
 
     def updates(self):
         """ Iterate over the latest fetched and processed """
+
         df = self.process()
         if df is None:
             return
         for _, entry in df.iterrows():
             total_count = self.db.execute(
-                DB_GET_TOTAL_COUNTS.format(territory=entry.rec_territory)
+                read_file(DB_GET_TOTAL_COUNTS).format(territory=entry.rec_territory)
             ).fetchone()
             yield total_count[0], entry.rec_dt, entry.rec_territory, entry.rec_value
