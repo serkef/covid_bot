@@ -117,6 +117,7 @@ class DailyData(GsheetFetcher):
     def updates(self):
         """ Iterate over the latest fetched and processed """
 
+        logger = logging.getLogger("DailyData.process")
         df = self.process()
         if df is None:
             return
@@ -124,4 +125,11 @@ class DailyData(GsheetFetcher):
             total_count = self.db.execute(
                 read_file(DB_GET_TOTAL_COUNTS).format(territory=entry.rec_territory)
             ).fetchone()
+            # Skipping low counts (under 10% of total and under 100 new cases)
+            if entry.rec_value < (1 / 10) * total_count or entry.rec_value < 100:
+                logger.debug(
+                    f"Skipping ({entry.rec_dt},{entry.rec_territory},{entry.rec_value})."
+                    f" Too low case count."
+                )
+                continue
             yield total_count[0], entry.rec_dt, entry.rec_territory, entry.rec_value
