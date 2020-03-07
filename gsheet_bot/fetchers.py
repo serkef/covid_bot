@@ -144,7 +144,7 @@ class HomeData(GsheetFetcher):
     def fetch(self):
         """ Fetches and process gsheet data. Returns a well structured data frame """
 
-        logger = logging.getLogger("DailyData.fetch")
+        logger = logging.getLogger("HomeData.fetch")
         data = self.data()
         if data is None:
             logger.debug("Fetched no data")
@@ -163,7 +163,7 @@ class HomeData(GsheetFetcher):
     def process(self):
         """ Processes data and stores to db """
 
-        logger = logging.getLogger("DailyData.process")
+        logger = logging.getLogger("HomeData.process")
         home_data = self.fetch()
         if home_data is None:
             logger.debug("Fetched empty dataset")
