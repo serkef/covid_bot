@@ -78,6 +78,7 @@ class DailyData(GsheetFetcher):
             .replace(r"^\s*$", "0", regex=True)  # replace empties
             .reset_index()  # Fix index
         )
+        df = df.drop(df[df[df.columns[1]].replace("", pd.NaT).isnull()].index)
         df.columns = ["rec_dt", "rec_territory", "rec_value"]
         df.rec_dt = pd.to_datetime(df.rec_dt, utc=True).dt.date
         df.rec_value = pd.to_numeric(
