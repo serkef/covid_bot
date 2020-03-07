@@ -4,7 +4,7 @@ import logging
 from time import sleep
 
 from gsheet_bot.config import GSHEET_POLLING_INTERVAL_SEC, APP_LOGLEVEL
-from gsheet_bot.fetchers import DailyData
+from gsheet_bot.fetchers import DailyData, HomeData
 from gsheet_bot.utilities import (
     set_logging,
     tweet_status,
@@ -26,8 +26,10 @@ def main():
     create_tables()
 
     logger.info(f"Starting...")
+    home_fetcher = HomeData()
     daily_fetcher = DailyData()
     while True:
+        home_fetcher.process()
         for total, day, territory, value in daily_fetcher.updates():
             status = create_status(total, day, territory, value)
             slack_status(status)

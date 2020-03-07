@@ -20,6 +20,8 @@ from .config import (
     SLACK_WEBHOOK_URL,
     STATUS_TEMPLATE,
     build_db_session,
+    DB_CREATE_RAW_HOME_TABLE,
+    DB_CREATE_LATEST_HOME_TABLE,
 )
 
 
@@ -34,6 +36,8 @@ def create_tables():
     cursor.execute(read_file(DB_CREATE_RAW_DAILY_TABLE))
     cursor.execute(read_file(DB_CREATE_LATEST_DAILY_TABLE))
     cursor.execute(read_file(DB_CREATE_LATEST_POSTS_TABLE))
+    cursor.execute(read_file(DB_CREATE_RAW_HOME_TABLE))
+    cursor.execute(read_file(DB_CREATE_LATEST_HOME_TABLE))
     cursor.commit()
     cursor.close()
 

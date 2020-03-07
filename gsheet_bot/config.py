@@ -24,7 +24,8 @@ GSHEET_API_SCOPES = os.environ["GSHEET_API_SCOPES"]
 GSHEET_API_SERVICE_ACCOUNT_FILE = os.environ["GSHEET_API_SERVICE_ACCOUNT_FILE"]
 GSHEET_POLLING_INTERVAL_SEC = int(os.getenv("GSHEET_POLLING_INTERVAL_SEC", "60"))
 GSHEET_SPREADSHEET_ID = os.environ["GSHEET_SPREADSHEET_ID"]
-GSHEET_SHEET_NAME = os.environ["GSHEET_SHEET_NAME"]
+GSHEET_SHEET_DAILY_NAME = os.environ["GSHEET_SHEET_DAILY_NAME"]
+GSHEET_SHEET_LIVE_NAME = os.environ["GSHEET_SHEET_LIVE_NAME"]
 
 # slack
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
@@ -32,11 +33,14 @@ SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 # Local DB
 DB_PATH = Path(os.environ["DB_PATH"])
 DB_CREATE_RAW_DAILY_TABLE = Path(__file__).parent / "sql" / "raw_daily_data.sql"
+DB_CREATE_RAW_HOME_TABLE = Path(__file__).parent / "sql" / "raw_home_data.sql"
 DB_CREATE_LATEST_DAILY_TABLE = Path(__file__).parent / "sql" / "latest_daily_data.sql"
+DB_CREATE_LATEST_HOME_TABLE = Path(__file__).parent / "sql" / "latest_home_data.sql"
 DB_CREATE_LATEST_POSTS_TABLE = Path(__file__).parent / "sql" / "post_daily_data.sql"
 DB_GET_LATEST_UPDATES = Path(__file__).parent / "sql" / "query_daily_data.sql"
 DB_GET_TOTAL_COUNTS = Path(__file__).parent / "sql" / "total_daily_data.sql"
 DB_INSERT_RAW_DAILY_DATA = Path(__file__).parent / "sql" / "insert_raw_daily_data.sql"
+DB_INSERT_RAW_HOME_DATA = Path(__file__).parent / "sql" / "insert_raw_home_data.sql"
 
 
 STATUS_TEMPLATE = """
