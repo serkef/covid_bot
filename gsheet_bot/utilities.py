@@ -58,13 +58,11 @@ def slack_status(status):
 
 def create_status(total, day, territory, value):
     if value == 1:
-        msg = f"A new incident reported for {territory}. Raises total to {total}."
+        msg = f"A new incident reported for {territory}. Raises total to {total:,d}."
         if total == 1:
             msg = f"First incident reported for {territory}"
     else:
-        msg = (
-            f"{value} new incidents reported for {territory}. Raises total to {total}."
-        )
+        msg = f"{value:,d} new incidents reported for {territory}. Raises total to {total:,d}."
         if value == total:
             msg = f"First {value} incidents reported for {territory}"
 

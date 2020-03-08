@@ -25,6 +25,9 @@ def test_status_template():
     assert "2 new incidents " in status
     assert "Raises total" in status
 
+    status = create_status(total=1234, value=2, territory="Mordor", day=day)
+    assert "1,234" in status
+
 
 if __name__ == "__main__":
     pytest.main([__file__])
