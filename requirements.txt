@@ -1,3 +1,5 @@
+country_converter
+emoji-country-flag
 google-api-python-client
 google-auth-httplib2
 pandas

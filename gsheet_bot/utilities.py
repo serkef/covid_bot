@@ -5,6 +5,8 @@ from logging.handlers import TimedRotatingFileHandler
 
 import requests
 import tweepy
+import flag
+from country_converter import convert
 
 from .config import (
     APP_LOGS,
@@ -64,18 +66,26 @@ def get_hashtag_country(territory):
     return territory
 
 
-def create_status(total, day, territory, value):
+def get_emoji_country(territory):
+    try:
+        return flag.flag(convert(names=[territory], to='ISO2'))
+    except ValueError:
+        return ""
 
-    territory = get_hashtag_country(territory)
+
+def create_status(total, day, country, value):
+
+    country = get_hashtag_country(country)
+    emoji = get_emoji_country(country)
 
     if value == 1:
-        msg = f"A new case reported for {territory}. Raises total to {total:,d}."
+        msg = f"A new case reported for {emoji} {country}. Raises total to {total:,d}."
         if total == 1:
-            msg = f"First case reported for {territory}."
+            msg = f"First case reported for {emoji} {country}."
     else:
-        msg = f"{value:,d} new cases reported for {territory}. Raises total to {total:,d}."
+        msg = f"{value:,d} new cases reported for {emoji} {country}. Raises total to {total:,d}."
         if value == total:
-            msg = f"First {value:,d} cases reported for {territory}."
+            msg = f"First {value:,d} cases reported for {emoji} {country}."
 
     return STATUS_TEMPLATE.format(message=msg)
 
