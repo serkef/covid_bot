@@ -64,7 +64,7 @@ def create_status(total, day, territory, value):
     else:
         msg = f"{value:,d} new incidents reported for {territory}. Raises total to {total:,d}."
         if value == total:
-            msg = f"First {value} incidents reported for {territory}"
+            msg = f"First {value:,d} incidents reported for {territory}"
 
     return STATUS_TEMPLATE.format(message=msg)
 

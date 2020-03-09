@@ -1,8 +1,9 @@
-python-dotenv
 google-api-python-client
 google-auth-httplib2
 pandas
+parse
 psycopg2-binary
 pytest
+python-dotenv
 sqlalchemy
 tweepy

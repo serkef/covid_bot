@@ -131,7 +131,9 @@ class DailyData(GsheetFetcher):
             total_count = self.db.execute(
                 read_file(DB_GET_TOTAL_COUNTS).format(territory=entry.rec_territory)
             ).fetchone()
-            yield total_count[0], entry.rec_dt, entry.rec_territory, entry.rec_value
+            yield int(total_count[0]), entry.rec_dt, entry.rec_territory, int(
+                entry.rec_value
+            )
 
 
 class HomeData(GsheetFetcher):
