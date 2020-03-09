@@ -10,7 +10,7 @@ def test_status_template():
     day = datetime.date.today()
 
     status = create_status(total=1, value=1, territory="Mordor", day=day)
-    assert "First incident reported for" in status
+    assert "First case reported for" in status
     assert "Raises total" not in status
 
     status = create_status(total=5, value=5, territory="Mordor", day=day)
@@ -18,11 +18,11 @@ def test_status_template():
     assert "Raises total" not in status
 
     status = create_status(total=5, value=1, territory="Mordor", day=day)
-    assert "A new incident " in status
+    assert "A new case " in status
     assert "Raises total " in status
 
     status = create_status(total=5, value=2, territory="Mordor", day=day)
-    assert "2 new incidents " in status
+    assert "2 new cases " in status
     assert "Raises total" in status
 
     status = create_status(total=1234, value=2, territory="Mordor", day=day)

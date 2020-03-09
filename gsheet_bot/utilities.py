@@ -69,13 +69,13 @@ def create_status(total, day, territory, value):
     territory = get_hashtag_country(territory)
 
     if value == 1:
-        msg = f"A new incident reported for {territory}. Raises total to {total:,d}."
+        msg = f"A new case reported for {territory}. Raises total to {total:,d}."
         if total == 1:
-            msg = f"First incident reported for {territory}."
+            msg = f"First case reported for {territory}."
     else:
-        msg = f"{value:,d} new incidents reported for {territory}. Raises total to {total:,d}."
+        msg = f"{value:,d} new cases reported for {territory}. Raises total to {total:,d}."
         if value == total:
-            msg = f"First {value:,d} incidents reported for {territory}."
+            msg = f"First {value:,d} cases reported for {territory}."
 
     return STATUS_TEMPLATE.format(message=msg)
 
