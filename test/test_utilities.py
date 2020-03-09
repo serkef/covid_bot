@@ -1,6 +1,6 @@
 import datetime
 
-from gsheet_bot.utilities import create_status
+from gsheet_bot.utilities import create_status, get_hashtag_country
 import pytest
 
 
@@ -26,7 +26,19 @@ def test_status_template():
     assert "Raises total" in status
 
     status = create_status(total=1234, value=2, territory="Mordor", day=day)
-    assert "1,234" in status
+    assert "#mordor" in status
+
+
+def test_get_hashtag_country():
+    cases = [
+        {"given": "Germany", "expected": "#germany"},
+        {"given": "Hong Kong", "expected": "#hongkong"},
+        {"given": " A 123 day at Hong Kong", "expected": "#adayathongkong"},
+        {"given": "1 2 3", "expected": "1 2 3"},
+    ]
+
+    for case in cases:
+        assert case["expected"] == get_hashtag_country(case["given"])
 
 
 if __name__ == "__main__":
