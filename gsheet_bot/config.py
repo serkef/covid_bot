@@ -9,6 +9,8 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv(find_dotenv())
 
+RESOURCES = Path(__file__).parent / "resources"
+
 # Log settings
 APP_LOGS = Path(os.environ["APP_LOGS"])
 APP_LOGLEVEL = os.getenv("APP_LOGLEVEL", "INFO")

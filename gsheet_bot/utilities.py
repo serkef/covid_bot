@@ -22,6 +22,7 @@ from .config import (
     build_db_session,
     DB_CREATE_RAW_HOME_TABLE,
     DB_CREATE_LATEST_HOME_TABLE,
+    RESOURCES,
 )
 
 
@@ -72,12 +73,13 @@ def create_status(total, day, territory, value):
 def tweet_status(status):
     logger = logging.getLogger(f"{__name__}.tweet_status")
     logger.info(f"Posting status {status!r}")
+    media_filepath = RESOURCES / "BREAKING-COVID2019APP.jpg"
 
     if POST_TWITTER:
         auth = tweepy.OAuthHandler(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_KEY_SECRET)
         auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-        api.update_status(status)
+        api.update_with_media(str(media_filepath), status=status)
     else:
         logger.info("Will not post to twitter - disabled")
 
