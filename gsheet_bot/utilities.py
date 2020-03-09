@@ -58,7 +58,7 @@ def slack_status(status):
 
 
 def get_hashtag_country(territory):
-    hashword = ''.join(c for c in territory.lower() if c.isalpha())
+    hashword = "".join(c for c in territory.lower() if c.isalpha())
     if hashword:
         return f"#{hashword}"
     return territory

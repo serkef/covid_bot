@@ -75,7 +75,7 @@ class DailyData(GsheetFetcher):
             logger.debug("Fetched no data")
             return
         logger.info("Processing fetched data...")
-        df = pd.DataFrame(data["values"]).iloc[3:, 1:61]
+        df = pd.DataFrame(data["values"]).iloc[3:, 1:63]  # col: BL (Mar 14)
         df.columns = df.iloc[0]  # Set first line as headers
         df = (
             df.drop(df.index[0])  # Remove first row
@@ -88,8 +88,10 @@ class DailyData(GsheetFetcher):
         df.columns = ["rec_dt", "rec_territory", "rec_value"]
         df.rec_dt = pd.to_datetime(df.rec_dt, utc=True).dt.date
         df.rec_value = pd.to_numeric(
-            df.rec_value.fillna("0").str.replace("+", "").str.replace(",", "")
+            df.rec_value.fillna("0").str.replace("+", "").str.replace(",", ""),
+            errors="coerce",
         )
+        df.rec_value = pd.to_numeric(df.rec_value.fillna("0"))
         df = df.sort_values(by=["rec_dt", "rec_territory"])
 
         return df
