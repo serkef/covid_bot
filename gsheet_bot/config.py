@@ -47,6 +47,7 @@ DB_INSERT_RAW_HOME_DATA = Path(__file__).parent / "sql" / "insert_raw_home_data.
 
 STATUS_TEMPLATE = """
 #BREAKING latest #COVID2019 update
+
 {message}
 
 Visit 📊covid2019.app for the latest updates
