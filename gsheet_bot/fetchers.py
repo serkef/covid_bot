@@ -160,8 +160,10 @@ class HomeData(GsheetFetcher):
         val_cols = ["cases", "deaths", "recovered", "severe", "tested", "active"]
         df.columns = ["rec_territory"] + val_cols
         for field in val_cols:
-            df[field] = pd.to_numeric(df[field].fillna("0").str.replace(",", ""))
-
+            df[field] = pd.to_numeric(
+                df[field].fillna("0").str.replace(",", ""), errors="coerce"
+            )
+            df[field] = pd.to_numeric(df[field].fillna("0"))
         return df
 
     def process(self):
