@@ -50,7 +50,6 @@ STATUS_TEMPLATE = """
 {message}
 
 Visit 📊covid2019.app for the latest updates
-👉 Follow @covid2019app & join our team
 """
 
 POST_TWITTER = os.getenv("POST_TWITTER", "false") == "true"
