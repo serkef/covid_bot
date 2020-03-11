@@ -7,6 +7,7 @@ import requests
 import tweepy
 import flag
 from country_converter import convert
+from tweepy import TweepError
 
 from .config import (
     APP_LOGS,
@@ -99,7 +100,10 @@ def tweet_status(status):
         auth = tweepy.OAuthHandler(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_KEY_SECRET)
         auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-        api.update_with_media(str(media_filepath), status=status)
+        try:
+            api.update_with_media(str(media_filepath), status=status)
+        except TweepError:
+            logger.error(f"Cannot post message {status}", exc_info=True)
     else:
         logger.info("Will not post to twitter - disabled")
 
