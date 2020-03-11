@@ -79,13 +79,13 @@ def create_status(total, day, country, value):
     emoji = get_emoji_country(country)
 
     if value == 1:
-        msg = f"A new case reported for {emoji} {country}. Raises total to {total:,d}."
+        msg = f"A new case reported today in {emoji} {country}. Raises total to {total:,d}."
         if total == 1:
-            msg = f"First case reported for {emoji} {country}."
+            msg = f"First case reported in {emoji} {country}."
     else:
-        msg = f"{value:,d} new cases reported for {emoji} {country}. Raises total to {total:,d}."
+        msg = f"{value:,d} new cases reported today in {emoji} {country}. Raises total to {total:,d}."
         if value == total:
-            msg = f"First {value:,d} cases reported for {emoji} {country}."
+            msg = f"First {value:,d} cases reported in {emoji} {country}."
 
     return STATUS_TEMPLATE.format(message=msg)
 
