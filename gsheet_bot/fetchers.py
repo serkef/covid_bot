@@ -131,7 +131,8 @@ class DailyData(GsheetFetcher):
             return
         for _, entry in df.iterrows():
             total_count = self.db.execute(
-                read_file(DB_GET_TOTAL_COUNTS).format(territory=entry.rec_territory)
+                read_file(DB_GET_TOTAL_COUNTS).format(
+                    territory=entry.rec_territory.replace("'", "''"))
             ).fetchone()
             yield int(total_count[0]), entry.rec_dt, entry.rec_territory, int(
                 entry.rec_value
