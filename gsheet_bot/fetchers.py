@@ -20,6 +20,8 @@ from gsheet_bot.config import (
 )
 from gsheet_bot.utilities import read_file
 
+socket.setdefaulttimeout(600)
+
 
 class GsheetFetcher:
     """ A generic fetcher for Google sheets. Knows how to auth and fetch. """
