@@ -21,11 +21,12 @@ from .config import (
     DB_CREATE_LATEST_POSTS_TABLE,
     DB_CREATE_LATEST_DAILY_TABLE,
     SLACK_WEBHOOK_URL,
-    STATUS_TEMPLATE,
     build_db_session,
     DB_CREATE_RAW_HOME_TABLE,
     DB_CREATE_LATEST_HOME_TABLE,
     RESOURCES,
+    STATUS_FOOTER,
+    STATUS_HEADER,
 )
 
 
@@ -69,7 +70,7 @@ def get_hashtag_country(territory):
 
 def get_emoji_country(territory):
     try:
-        return flag.flag(convert(names=[territory], to='ISO2'))
+        return flag.flag(convert(names=[territory], to="ISO2"))
     except ValueError:
         return ""
 
@@ -88,7 +89,11 @@ def create_status(total, day, country, value):
         if value == total:
             msg = f"First {value:,d} cases reported in {emoji} {country}."
 
-    return STATUS_TEMPLATE.format(message=msg)
+    if len(msg) > 240:
+        msg = msg.replace("#CoronavirusPandemic ", "")
+
+    status = STATUS_HEADER + "\n\n" + msg + "\n\n" + STATUS_FOOTER
+    return status
 
 
 def tweet_status(status):

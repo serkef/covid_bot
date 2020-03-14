@@ -45,13 +45,8 @@ DB_INSERT_RAW_DAILY_DATA = Path(__file__).parent / "sql" / "insert_raw_daily_dat
 DB_INSERT_RAW_HOME_DATA = Path(__file__).parent / "sql" / "insert_raw_home_data.sql"
 
 
-STATUS_TEMPLATE = """
-#BREAKING latest #COVID2019 update
-
-{message}
-
-Visit 📊covid2019.app for the latest updates
-"""
+STATUS_HEADER = "#BREAKING latest #COVID-19 #CoronavirusPandemic update"
+STATUS_FOOTER = "Visit 📊covid2019.app for the latest updates"
 
 POST_TWITTER = os.getenv("POST_TWITTER", "false") == "true"
 POST_SLACK = os.getenv("POST_SLACK", "false") == "true"

@@ -75,7 +75,7 @@ class DailyData(GsheetFetcher):
             logger.debug("Fetched no data")
             return
         logger.info("Processing fetched data...")
-        df = pd.DataFrame(data["values"]).iloc[3:, 1:63]  # col: BL (Mar 14)
+        df = pd.DataFrame(data["values"]).iloc[3:, 1:67]  # col: BL (Mar 17)
         df.columns = df.iloc[0]  # Set first line as headers
         df = (
             df.drop(df.index[0])  # Remove first row
@@ -132,7 +132,8 @@ class DailyData(GsheetFetcher):
         for _, entry in df.iterrows():
             total_count = self.db.execute(
                 read_file(DB_GET_TOTAL_COUNTS).format(
-                    territory=entry.rec_territory.replace("'", "''"))
+                    territory=entry.rec_territory.replace("'", "''")
+                )
             ).fetchone()
             yield int(total_count[0]), entry.rec_dt, entry.rec_territory, int(
                 entry.rec_value
